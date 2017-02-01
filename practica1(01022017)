@@ -13,3 +13,9 @@ files=unzip(eness,list = TRUE)$Name
 unzip(eness,files = files[grepl("dbf",files)])
 eness2013_hogares<-data.frame(read.dbf("eness2013_hogares.dbf"))
 eness2013_cb_enoe_sdem<-data.frame(read.dbf("eness2013_cb_enoe_sdem.dbf"))
+
+###Repaso###
+table(SDEMT116$ENT)
+install.packages("questionr")#solo bajamos de internet de libreria de manera temporal
+require(questionr)#mandamos a llamar la libreria a mi sesion de R
+wtd.table(SDEMT116$SEX,weights=SDEMT116$FAC)#es para expandir los datos a los datos reales
