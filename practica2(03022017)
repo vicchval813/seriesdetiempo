@@ -20,3 +20,12 @@ wtd.table(SDEMT116$CLASE2,weights=SDEMT116$FAC)
 ags16v1<-subset(SDEMT116,SDEMT116$ENT=="01" | SDEMT116$ENT=="02" )
 table(SDEMT116$ENT)
 ###################################################################
+introduccion a series de tiempo
+data("AirPassengers")
+class(AirPassengers)
+#"ts" tipo de base de datos time-series
+start(AirPassengers)#muestra cuando inicia la st
+end(AirPassengers)#mustra cuando termina la st
+frequency(AirPassengers)#muestra la frecuencia de la elaboracion de los datos de st
+summary(AirPassengers)#muestra el resumen estadistico de la st
+plot(AirPassengers)# muestra la grafica de st
