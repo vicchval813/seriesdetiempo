@@ -1,0 +1,51 @@
+########################################
+#simulacion e series de tiempo
+#vamos a simular 1 indicador
+#para la simulacion en principio necesitamos alguna informacion
+#valor maximo, minimo,el numero de datos
+#en este ejemplo vamos a proponer la poblaciion de mexico
+#valor maximo, minimo,el numero de datos
+#en este ejemplo vamos a proponer la poblacion en Mexico
+#que el valor minimo seran 100,15 datos que inicie en 2000
+pob<-sample(100:120,15,replace = F)
+pob
+#la convertimos en ST
+pobts<-ts(pob,frequency = 1,start = (2000))
+end(pobts)###cuando termina
+star=(pobts)#cuando inicia
+plot(pobts)#darle formato
+plot(aggregate(pobts))
+
+###bajar de inegi la ocupacion de las personas
+#importar csv
+#infor<-ts(read.csv(("C:\\Users\\SalaD-10\\Downloads\\IndicadoresENOE_2017-02-08.xls")), frequency=4, start=(2005))....mal
+#infor....mal
+
+infor4<-ts(read.csv(("C:\\Users\\SalaD-10\\Downloads\\inf.csv"),header=TRUE), frequency=4, start=2005)
+infor4
+#############################
+#desocupacion 10.2
+#tasa critica 10.7
+#tasa  de trabajo asalariado 10.5
+#10.3
+##multiserie de tiempo
+indi3<-(read.csv(("C:\\Users\\SalaD-10\\Downloads\\inf2.csv")))#, frequency=4, start=2005
+desocu<-ts(indi3[,1],frequency = 4,start = 2005,end = 2016)# entre corchetes primero son filas y despues columnas
+#en desocu solo mandamos a llamar solo la serie de desocupados que es la primera columna en mi documento
+desocu
+#############################
+
+##declarar 3 series de tiempo de la matriz indi3
+##la serie de tiempo deben ser la tasa de ocupacion parcial,
+##trabajo asalariado y tasa de condiciones criticas
+tocupar<-ts(indi3[,2],frequency = 4,start = 2005,end = 2016)
+tocupar
+
+trasal<-ts(indi3[,3],frequency = 4,start = 2005,end = 2016)
+trasal
+
+tconcri<-ts(indi3[,4],frequency = 4,start = 2005,end = 2016)
+tconcri
+
+#tarea1: importar la base de datos con las 4 tasas seleccionadas
+#desde la pag de inegi...
