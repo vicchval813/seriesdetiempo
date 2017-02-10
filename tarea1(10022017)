@@ -1,0 +1,4 @@
+webdata<-"http://www3.inegi.org.mx/Sistemas/infoenoe/Default_15mas.aspx?s=est&c=27736/IndicadoresENOE_2017-02-09.xls"
+base<-read.csv(webdata)
+infor<-ts(base,frequency = 4,start = 2005,end = 2016)
+View(infor)
