@@ -62,3 +62,8 @@ plot(pceuts[,c(1,3)])##la funcion c significa concatenar, concatena vectores
 #2011-2015->4 ta ST
 #1) graficar en una misma grafica la ST 2y 3
 #2)graficar en una misma grafica la ST 2y 3
+pib <-data.frame(read.csv(("C:\\Users\\SALA-D18\\Documents\\pib2.csv")))
+
+pibts<- ts (pib,frequency = 1,start = 1980)
+plot.ts(pibts[ , c(2,3)])
+plot.ts(pibts[ , c(1,4)])
