@@ -1,0 +1,64 @@
+#1. buscamos inegi
+#2. bajamos la ST
+#3. ubicar la ruta de la ST en la computadora
+#4. importar en R el archivo .csv
+#5. Reconocer el archivo como ST
+#################################################
+#generar 4 objetos con datos aleatorios y que tengan 60 datos
+#objeto 1 de nuemros de profesionistas (mill) rango de 5-8
+#objeto 2 crecimiento  del pib rango de 0-5
+#objeto 3 porcentaje de ocupados rango de 40-60
+#objeto 4 porcentaje de desocupados rango de 3 a 8
+install.packages("foreign")
+require(foreign)
+prof<-sample(5:8,60,replace = TRUE)
+cpib<-sample(0:5,60,replace = TRUE)
+employed<-sample(40:60,60,replace = TRUE)
+unemployed<-sample(3:8,60,replace = TRUE)
+
+#1)una vez que generen los datos hacer una data frame de los 4 objetos
+
+pceu<-data.frame(prof,cpib,employed,unemployed)
+
+#2)mostrar en consola los primeros 12 y ultimos 12
+pceus12<-pceu[1:12,]#muestra los primeros 12 renglones
+pceu[49:60,]
+
+#3)convertir los objetos en series de tiempo
+#comenzando en 2010 y son datos mensuales
+profts<-ts(prof,frequency = 12,start = 2010)
+cpibts<-ts(cpib,frequency = 12,start = 2010)
+employedts<-ts(employed,frequency = 12,start = 2010)
+unemployedts<-ts(unemployed,frequency = 12,start = 2010)
+end(profts)
+
+#4)graficar los profesionistas y ocupados en la misma grafica
+
+plot(cbind(profts,employedts))
+
+#5) graficar pib y lpos desocupados
+
+plot(cbind(cpibts,unemployedts))
+
+#6)graficar todos juntos
+
+plot(cbind(cpibts,unemployedts,profts,employedts))
+
+#graficamos solo la columna 1 y 3 del data frame pceu
+#1er forma
+plot.ts(pceu[,c(1,3)])
+#2 da forma
+pceuts<-ts(pceu,frequency = 12,start = 2010)
+plot(pceuts[,c(1,3)])##la funcion c significa concatenar, concatena vectores
+
+##########################
+#Bajar datos de la tasa del pib con tasa de crecimiento anual de mexico
+#de 1980 a 2015
+
+#crear 4 series de tiempo
+#1980-1990->1er ST
+#1991-2000-> 2da ST
+#2001-2010->3er ST
+#2011-2015->4 ta ST
+#1) graficar en una misma grafica la ST 2y 3
+#2)graficar en una misma grafica la ST 2y 3
