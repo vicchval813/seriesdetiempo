@@ -2,3 +2,5 @@ webdata<-"http://www3.inegi.org.mx/Sistemas/infoenoe/Default_15mas.aspx?s=est&c=
 base<-read.csv(webdata)
 infor<-ts(base,frequency = 4,start = 2005,end = 2016)
 View(infor)
+
+##el problem esta en en link de descarga, yaque al ejecutarlo, muestra los datos de la pagina y no del doc!
