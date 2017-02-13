@@ -1,0 +1,51 @@
+###series de tiempo multiple###
+prof<-sample(5:8,60,replace = TRUE)
+cpib<-sample(0:5,60,replace = TRUE)
+employed<-sample(40:60,60,replace = TRUE)
+unemployed<-sample(3:8,60,replace = TRUE)
+profts<-ts(prof,frequency = 12,start = 2010)
+cpibts<-ts(cpib,frequency = 12,start = 2010)
+employedts<-ts(employed,frequency = 12,start = 2010)
+unemployedts<-ts(unemployed,frequency = 12,start = 2010)
+
+seriemultiple<-ts.intersect(profts,cpibts,employedts,unemployedts)#serie de tiempo multiple
+#con las cuatro variables
+plot(seriemultiple,main="serie de tiempo multiple",xlab="Años",ylab="Numero de personas",col="green")#grafica serie de tiempo multiple
+seriemultiple10.12<-window(seriemultiple,start=c(2010,1),end=c(2012,1))
+seriemultiple12.14<-window(seriemultiple,start=c(2012,1),end=c(2014,12))
+plot(seriemultiple10.12,main = "serie de tiempo multimple",xlab = "años",ylab = "numero de personas",col="brown")
+plot(seriemultiple12.14,main = "serie de tiempo multimple",xlab = "años",ylab = "numero de personas",col="blue")
+
+######ejercicio
+#obtener 4 series de tiempo cada quien elige con minimo 30 datos
+#Las series de tiempo que importen tienen que tener sustento para compararlas
+##1)serie 1
+##2)serie 2
+##3)erie 3
+##4)serie 4
+#IMPORTARLAS, DECLARARLAS SERIES DE TIEMPO, GRAFICARLAS JUNTAS COMO SERIES DE TIEMPO CADA UNA
+##CREAR SERIE DE TIEMPO MULTIPLE...Y GRAFICARLAS CON FORMATO..
+#DESPUES DIVIDIR ESTAS SERIES DE TIEMPO EN 3 PERIODOS CON INTERVALOS IGUALES
+#ES DECIR SI TIENEN 30 DATOS..GENERAR 3 ST CON 10 AÑOS CADA UNA Y GRAFICAR CON FORMATO
+#TAMBIEN INVESTIGAR COMO GRAFICAR LA ST MULTIPLE CON DIFERENTES COLORES LAS ST
+
+pgasolina<-data.frame(read.csv("C:\\Users\\SALA-D4\\Documents\\PRECIO DE GASOLINA.csv"))
+
+pgasolinats<-ts(pgasolina,frequency = 12,start = 2010)
+start(pgasolinats)
+end(pgasolinats)
+plot(pgasolinats)
+plot(pgasolinats[,c(1)])
+plot(pgasolinats[,c(2)])
+plot(pgasolinats[,c(3)])
+plot(pgasolinats[,c(1,3)])
+plot(pgasolinats[,c(1,2)])
+plot(pgasolinats[,c(2,3)])
+stmultiple<-ts.intersect(pgasolinats)
+plot(stmultiple,main="STM Gasolina",xlab="Años",ylab="precio",col="red")
+stmultiple10.12<-window(stmultiple,start=c(2010,1),end=c(2012,12))
+stmultiple13.14<-window(stmultiple,start=c(2013,1),end=c(2014,12))
+stmultiple15.16<-window(stmultiple,start=c(2015,1),end=c(2016,11))
+plot(stmultiple10.12,main = "STM gasolina",xlab = "años",ylab = "precios",col="brown")
+plot(stmultiple13.14,main = "STM gasolina",xlab = "años",ylab = "precios",col="brown")
+plot(stmultiple15.16,main = "STM gasolina",xlab = "años",ylab = "precios",col="brown")
