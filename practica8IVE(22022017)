@@ -1,0 +1,171 @@
+############   Práctica 8  ############
+#IVE 
+#
+bdeso<-read.csv("C:\\Users\\SALA-D18\\Downloads\\TDes.csv")
+bdeso
+tsddeso<-ts(bdeso,frequency = 4,start = 2005)
+v1<-bdeso[1,]
+v2<-bdeso[2,]
+v3<-bdeso[3,]
+v4<-bdeso[4,]
+v5<-bdeso[5,]
+v6<-bdeso[6,]
+v7<-bdeso[7,]
+v8<-bdeso[8,]
+v9<-bdeso[9,]
+v10<-bdeso[10,]
+v11<-bdeso[11,]
+v12<-bdeso[12,]
+v13<-bdeso[13,]
+v14<-bdeso[14,]
+v15<-bdeso[15,]
+v16<-bdeso[16,]
+v17<-bdeso[17,]
+v18<-bdeso[18,]
+v19<-bdeso[19,]
+v20<-bdeso[20,]
+v21<-bdeso[21,]
+v22<-bdeso[22,]
+v23<-bdeso[23,]
+v24<-bdeso[24,]
+v25<-bdeso[25,]
+v26<-bdeso[26,]
+v27<-bdeso[27,]
+v28<-bdeso[28,]
+v29<-bdeso[29,]
+v30<-bdeso[30,]
+v31<-bdeso[31,]
+v32<-bdeso[32,]
+v33<-bdeso[33,]
+v34<-bdeso[34,]
+v35<-bdeso[35,]
+v36<-bdeso[36,]
+v37<-bdeso[37,]
+v38<-bdeso[38,]
+v39<-bdeso[39,]
+v40<-bdeso[40,]
+v41<-bdeso[41,]
+v42<-bdeso[42,]
+v43<-bdeso[43,]
+v44<-bdeso[44,]
+v45<-bdeso[45,]
+v46<-bdeso[46,]
+v47<-bdeso[47,]
+v48<-bdeso[48,]
+a<-(v1+v2+v3)/3
+b<-(v2+v3+v4)/3
+c<-(v3+v4+v5)/3
+d<-(v4+v5+v6)/3
+e<-(v5+v6+v7)/3
+f<-(v6+v7+v8)/3
+g<-(v7+v8+v9)/3
+h<-(v8+v9+v10)/3
+i<-(v9+v10+v11)/3
+j<-(v10+v11+v12)/3
+k<-(v11+v12+v13)/3
+l<-(v12+v13+v14)/3
+m<-(v13+v14+v15)/3
+n<-(v14+v15+v16)/3
+o<-(v15+v16+v17)/3
+p<-(v16+v17+v18)/3
+q<-(v17+v18+v19)/3
+r<-(v18+v19+v20)/3
+s<-(v19+v20+v21)/3
+t<-(v20+v21+v22)/3
+u<-(v21+v22+v23)/3
+v<-(v22+v23+v24)/3
+w<-(v23+v24+v25)/3
+x<-(v24+v25+v26)/3
+y<-(v25+v26+v27)/3
+z<-(v26+v27+v28)/3
+aa<-(v27+v28+v29)/3
+bb<-(v28+v29+v30)/3
+cc<-(v29+v30+v31)/3
+dd<-(v30+v31+v32)/3
+ee<-(v31+v32+v33)/3
+ff<-(v32+v33+v34)/3
+gg<-(v33+v34+v35)/3
+hh<-(v34+v35+v36)/3
+ii<-(v35+v36+v37)/3
+jj<-(v36+v37+v38)/3
+kk<-(v37+v38+v39)/3
+ll<-(v38+v39+v40)/3
+mm<-(v39+v40+v41)/3
+nn<-(v40+v41+v42)/3
+oo<-(v41+v42+v43)/3
+pp<-(v42+v43+v44)/3
+qq<-(v43+v44+v45)/3
+rr<-(v44+v45+v46)/3
+ss<-(v45+v46+v47)/3
+tt<-(v46+v47+v48)/3
+###Creando vector de Tendencia centrada
+Tend <-data.frame (c(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,aa,bb,cc,dd,ee,ff,gg,hh,ii,jj,kk,ll,mm,nn,oo,pp,qq,rr,ss,tt))
+View (Tend)
+###Aditivo
+Ad<-data.frame((bdeso[2:47,1])-(Tend[1:46,1]))
+View(Ad)
+mat<-matrix(Ad,nrow = 4,ncol=12,byrow = T)
+View(mat)
+
+############   Práctica 8  ############
+#IVE 
+#
+bdeso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
+bdeso
+
+vectz<-c(1:47) #Declaramos el vector que vamos a llenar para obtener la tendencia centrada
+
+for(i in 1:47) #condición lógica donde extraemos de la base los componentes para sacar el promedio
+  {
+  
+  v1<-bdeso[i,]
+  v2<-bdeso[i+1,]
+  v3<-bdeso[i+2,]
+  a<-(v1+v2+v3)/3
+  
+  vectz<-replace(vectz,i,a)
+  
+  }
+
+vectz
+sig
+sig<-bdeso[2:47,]-t[1:46,]
+
+sig1<-data.frame(sig)
+
+Matriz<- matrix(1:4,ncol = 12,nrow = 4
+Matriz<- replace(Matriz,1,0)
+
+De: Miguel Alcaraz Rodríguez <miguel.alcaraz94@hotmail.com>
+Enviado: miércoles, 22 de febrero de 2017 05:03:26 p. m.
+Para: Lucero Zuñiga
+Asunto: cosa rara en R
+ 
+############   Práctica 8  ############
+#IVE 
+#
+bdeso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
+bdeso
+
+vectz<-c(1:47) #Declaramos el vector que vamos a llenar para obtener la tendencia centrada
+
+for(i in 1:47) #condición lógica donde extraemos de la base los componentes para sacar el promedio
+  {
+  
+  v1<-bdeso[i,]
+  v2<-bdeso[i+1,]
+  v3<-bdeso[i+2,]
+  a<-(v1+v2+v3)/3
+  
+  vectz<-replace(vectz,i,a)
+  
+  }
+
+vectz
+sig
+sig<-bdeso[2:47,]-t[1:46,]
+
+sig1<-data.frame(sig)
+
+Matriz<- matrix(1:4,ncol = 12,nrow = 4
+Matriz<- replace(Matriz,1,0)
