@@ -169,3 +169,4 @@ sig1<-data.frame(sig)
 
 Matriz<- matrix(1:4,ncol = 12,nrow = 4
 Matriz<- replace(Matriz,1,0)
+
