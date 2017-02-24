@@ -1,0 +1,54 @@
+datos<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
+xd<-read.csv(file.choose())
+tsd<-ts(xd,frequency = 4,start = 2007)
+c<-1:20
+ft<-decompose(tsd)
+ft$trend
+c<-1:45
+
+datosts<-ts(datos,frequency = 3,start = 2005)
+plot(decompose(datosts))
+summary(datosts)
+ dedatosts <- decompose(datosts)
+names(dedatosts)
+dedatosts$trend
+dedatosts$seasonal
+dedatosts$random
+
+u1<-(1:10)
+
+for(i in 1:10){
+  u1[i]<-u1[i]+2
+  print(u1[i])
+}
+
+s<-5
+while(s<6){s<-s*2;print(s)}
+
+s<-1
+while(s<5){s<-s+1;if(s==4) break;print(s);}
+ 
+s<-1
+while(s<5){s<-0+1;if(s==2) break;print(s);}
+#corre todos los valores por que no encuentra el 2
+s<-2
+while(s<3){s<-s+1;if(s==2) next;print(s);}
+
+##para nombrar una matriz es la funcion dimnames
+
+###graficar tendencia#####
+xd<-read.csv(file.choose())
+tsd<-ts(xd,frequency = 4,start = 2007)
+ft<-decompose(tsd)
+ft$trend
+ft$seasonal
+plot(tsd,col="blue",main="tasa de desocupacion trimestral",ylab="tasas", xlab="años")
+lines(ft$trend,col="red",ylab="tendencia")
+####graficar estacionalidad####
+monthplot(ft$seasonal,main="IVEc",ylab = "IVEc trimestral")
+
+
+###tarea hacerlo de manera multiplicativo
+###1)encontrar una st con tendencia ala alza y la estacionaridad tambien se incremente
+###2)aplicar modelo multiplicativo
+###3)graficar tendencia
