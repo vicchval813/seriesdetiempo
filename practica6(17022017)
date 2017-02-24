@@ -1,0 +1,51 @@
+# para descomponer una serie de tiempo graficamente se utiliza 
+## una funcion que se llama decompose, po lo que primero 
+## es importante reconocer la serie de tiemp y despues aplicarle la funcion 
+## graficamente 
+desoc <-sample(3:8, 44, replace=T )
+tdesoc <- ts( desoc, frequency = 4, start = 2005)
+plot(decompose(tdesoc))
+plot(tdesoc)
+
+
+tiie <-data.frame(read.csv(("C:\\Users\\SALA-D18\\Downloads\\TIIE2015.csv")))
+sttiie<- ts (tiie,frequency = 52,start = 2005)
+plot(sttiie)
+plot(decompose(sttiie))
+
+
+pib <- read.csv ("C:\\Users\\SALA-D18\\Downloads\\PIB.csv")
+pibst <- ts (pib ,frequency = 4,start = 2007)
+plot(pibst)
+
+plot(decompose(pibst))
+
+
+summary(pibst)
+names(pibst$trend)
+depibst <- decompose(pibst)
+names(depibst)
+depibst$trend
+######################
+## ejercicio descomponer una serie de tiempo 
+## graficamente y mandar llamarla cada uno de los componentes de tiempo 
+## ralizar un interpretacion sobre los datos observados 
+# serie 1 = consumo de bienes y servicios de 
+##mx anuales (renglon 9:43), columna k
+## serie 2= tasa de desocupacion, 2005
+## trimes
+
+con<- read.csv ("C:\\Users\\SALA-D18\\Downloads\\consumo.csv")
+const <- ts (con ,frequency = 12,start = 2008)
+plot(const)
+plot(decompose(const))
+
+
+summary(const)
+names(const$trend)
+deconst <- decompose(const)
+names(deconst)
+deconst$trend
+## se puede observar que en el año 2009 nuestra grafica tiene una significante 
+## alza de concumo de bienes y servicios, esto quiere decir que hubo una mayor concentracion 
+## en el consumo de los hogares y por ende se ve reflejado en el grafico 
