@@ -1,4 +1,4 @@
-############   Práctica 8  ############
+############   Práctica 7 ############
 #IVE 
 #
 bdeso<-read.csv("C:\\Users\\SALA-D18\\Downloads\\TDes.csv")
@@ -107,7 +107,7 @@ View(Ad)
 mat<-matrix(Ad,nrow = 4,ncol=12,byrow = T)
 View(mat)
 
-############   Práctica 8  ############
+############   Práctica 7  ############
 #IVE 
 #
 bdeso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
