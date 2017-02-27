@@ -1,0 +1,14 @@
+###metodo Aditivo
+cet28<-read.csv("C:\\Users\\victo\\OneDrive\\documentos\\cete28dias.csv")
+cet28st<-ts(cet28,frequency = 12,start = 2010)
+stdes<-decompose(cet28st)
+stdes$trend
+stdes$seasonal
+plot(cet28st,col="blue",main="Tasa de rendimiento promedio mensual",ylab="Porcentajes", xlab="meses")
+lines(stdes$trend,col="red",ylab="tendencia")
+##Metodo multiplicativo
+stdesmul<-decompose(cet28st,type = "multiplicative")
+stdesmul$trend
+stdesmul$seasonal
+plot(cet28st,col="blue",main="Tasa de rendimiento promedio mensual",ylab="Porcentajes", xlab="meses")
+lines(stdesmul$trend,col="red",ylab="tendencia")
