@@ -1,0 +1,61 @@
+#### descomposicion clasica
+####se utiliza la funcion descompose
+####otro tipo de descomposicion de la estacionariedad,
+####tendencia y estacionariedad es la descomposicion 
+####por loess la cual esta basada en un algoritmo que permite 
+####descomponer las series de tiempo en tres elementos: estacionariedad, 
+####tendencia y aleatoriedad. uno de las ventajas de esta descomposicion 
+####es el calculo de la estacionariedad que se obtienen valores de 
+#### estacionariedad no constantes, en contraste con el metodo clasico de descomposicion
+
+###descomposicion clasica 
+###se utiliza la funcion descompose por ejemplo
+datos
+class(datos)
+des<-ts(datos,frequency = 4,start = 2005)
+class(des)
+desco<-decompose(des)
+tend1<-desco$trend
+plot(tend1,col="blue",main="tendencia de desocupacion",ylab="tasas",xlab="años")
+
+
+lines(tend2,col="red")
+####descomposicion tendencia, estacionalidad por Loose
+##se utiliza la funcion stl()
+
+
+#entonces para descomponer por Loose utilizamos
+deco2<-stl(des,s.window = "periodic",robust = T) ##marca error por que 
+#des aparece declarada como "ts" y necesitamos un "Time Series"
+##entonces haremos lo siguiente
+des2<-ts(datos[1:48,1],frequency = 4,start = 2005)
+deco2<-stl(des2,s.window = "periodic",robust = T)
+names(deco2)
+deco2
+desco$trend
+tend2<-deco2$time.series[,2]
+tend2
+esta2<-deco2$time.series[,1]
+esta2
+
+##descomposicion por Loose del pib
+pib<-read.csv(file.choose())
+
+pib1<-ts(pib,frequency = 4,start = 2007)
+despib<-decompose(pib1)
+tendpib1<-despib$trend
+plot(tendpib1,col="blue")
+
+pibb<-ts(pib[1:35,1],frequency = 4,start = 2007)
+descompib<-stl(pibb,s.window = "periodic",robust =T )
+tendpib<-descompib$time.series[,2]
+lines(tendpib,col="red")
+
+install.packages("fpp")
+require(fpp)
+ajus<-seasadj(deco2)#ajustamos estacionariedad
+##pronostico metodo ingenuo
+inge1<-naive(ajus,h=4)#El primer argumento, ajus es la serie de tiempo a pronosticar.
+#El segundo argumento, te pronostica ese periodo
+plot(inge1)
+inge1
