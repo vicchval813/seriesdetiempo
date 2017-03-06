@@ -1,0 +1,31 @@
+pidatos<-read.csv(file.choose())
+pibts<-ts(pidatos,frequency = 1,start = 1960)
+
+install.packages("fpp")
+require(fpp)
+
+plot(window(elec,star=1980),ylab = "gwh",xlab = "year",main = "Australian production electric")
+##Estacionariedad,tendencia y ciclico
+#para ver en que periodos ocurren los cambios
+seasonplot(elec,s=12,year.labels = F,main = "Electricidad",ylab = "año",col = rainbow(20),year.labels.left = TRUE,pch=10)#s es el numero de periodos
+
+plot(bricksq,ylab = "million units",xlab = "year",main = "australian clay brick production")
+seasonplot(bricksq,s=4,year.labels = F,main = "Electricidad",ylab = "año",col = rainbow(20),year.labels.left = TRUE,pch=10)
+#Esta y ciclico no mucha tendencia
+
+plot(hsales,main = "sales of new one-family houses, USA",ylab = "total sales", xlab="year")
+#no estacionarierad ni tendencia, posible ciclo
+seasonplot(hsales,s=12,year.labels = F,main = "Electricidad",ylab = "año",col = rainbow(20),year.labels.left = TRUE,pch=10)
+
+dec<-decompose(bricksq)
+#eliminando tendencia
+sinesta<-bricksq-dec$seasonal
+sintend<-bricksq-dec$trend
+
+plot(sinesta)
+plot(sintend)
+
+##Ejercicio 
+#3 ejemplos graficas detectar tendencia, estacionalidad y ciclo
+#analizar a que se debe cada una de las elementos encontrados
+##pib% anual 1960-2017
