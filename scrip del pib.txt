@@ -1,0 +1,29 @@
+basedatos<-read.csv(file.choose())
+pibts<-ts(basedatos,frequency = 1,start = 1961)
+plot(pibts, col="black", main="Pib de Mexico de 1961-2015", ylab="Porcentaje del Pib ", xlab="Años",pch=15)
+#se pueden notar por lo menos 5 fases ciclicas en los años 1960-1965, 1980-1985, 1985-1990, 1994-1996, 2007-2010
+
+#Analizando el periodo 19961-1980
+period<-basedatos[1:20,]
+View(period)
+periodts<-ts(period,frequency = 1,start = 1961)
+plot(periodts,col="red",main="Pib de Mexico de 1961-1980", ylab="Porcentaje del Pib ", xlab="Años",pch=8)
+#si hay fases ciclicas, no hay tendencia, no hay estacionaridad
+
+#para observar los periodos en los que surguen los cambios 
+install.packages("fpp")
+require(fpp)
+
+seasonplot(periodts,s=12,year.labels = F,main = "PIB",ylab = "Año",col = rainbow(10),year.labels.left = T,pch=10)
+
+#descomponiendo por Loose
+period2<-ts(basedatos[1:20,1],frequency = 4,start = 1961)
+desco<-stl(period2,s.window = "periodic",robust = T)
+names(desco)
+desco
+tend2<-desco$time.series[,2]
+plot(tend2)
+esta2<-desco$time.series[,1]
+plot(esta2)
+ram<-desco$time.series[,3]
+plot(ram)
