@@ -1,0 +1,27 @@
+#aditivo se utiliza cuando la magnitud de las fluctuaciones estacionales de la serie no varia al hacerlo la tendencia
+#estos modelos son apropiados cuando la magnitud de las fluctuaciones estacionales de la srie crece y decrece proporcionalmente
+#con los crecimientos y decrecimientos de la tendencia, respect.
+
+##DESESTACIONALIZAR
+
+#deso<-data.frame(read.csv("ruta"))
+#desot<-ts(deso,frecuency=4,start=2005)
+#plot(desot)
+#dectsd<-decompose(desot) descomposicion por modelo aditivo
+#dectsdmul<-decompose(desot,type="mult")descomposicion por modelo multiplicativo
+
+#para descestacionalizar una serie se desestacionaliza una serie de tiempo por diferentes razones 
+#entre las que se destacan desestacionalizar para poder predecir 
+#nuestros  datos con mayor precision y sin contar con factores externos al comportamiento de nuestro datos
+# dos ejemplos que permiten desestacionalizar una serie
+#require (fpp)
+#eeadj<-seasadj(dectsd)
+#eeadj
+#plot(eeadj)
+#lines(eeadj,col=blue)#grafica de serie de timepo sin estacionariedad
+#manualmnente seria:
+#sinesta<-desot-dectsd$seasonal
+#sinesta
+##para comprobar que los dos metodos son correctos
+#eeadj-sinesta
+#nos debe de dar una matriz cero (matriz con valores de cero)
