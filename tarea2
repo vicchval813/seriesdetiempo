@@ -1,0 +1,45 @@
+xg<-(read.csv(("C:\\Users\\Karina\\Documents\\gasto.csv")))
+View(xg)
+xgts<-ts (xg,frequency = 12 ,start = 2013,end = 2016)
+View(xgts)
+
+xi<-(read.csv(("C:\\Users\\Karina\\Documents\\ingreso.csv")))
+View(xi)
+xits<-ts (xi,frequency = 12 ,start = 2013,end = 2016)
+View(xits)
+#### calcular medias de xits y xgts
+mg<-mean(xgts)
+mi<-mean(xits)
+#### (xgts-mg) para sacar el dato menos su media 
+mediagasto<- xg-mg
+mediagasto
+#### xits-mi
+mediaingreso<- xi-mi
+mediaingreso
+
+#### hacer la multiplicacion 
+
+multi<-mediagasto*mediaingreso
+multi
+
+### hacer la suma de la multiplicacion 
+suma<-sum(multi)
+suma
+### sacar la covarianza aplicando la formula 
+
+cv<-(suma/(37-1))
+cv
+###### aplicar la formula de cov con la funcion de R
+cov(xg,xi)
+
+######################################################
+##########correlacion #####
+### aplicando la formula#####
+sd(xgts)
+sd(xits)
+#### formula ###
+corr<-(cv/(sd(xgts)*sd(xits)))
+corr
+
+### funcion de R
+cor(xgts, xits)
