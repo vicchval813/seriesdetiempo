@@ -1,0 +1,35 @@
+pib1# serie de tiempo del pib
+datosts#serie de tiempo de tasa de desocupacion
+acf(pib1)
+acf(datosts)
+##tarea buscar una ST de mexico en donde con el correlograma determinen que tiene ruido blanco
+#otra ST donde muestre el correlograma exponga que la ST tiene caminata aleatoria
+######################
+######################Modelos lineales para pronosticar
+##son la aplicacion de pronosticos lineales
+#como el ingenuo, promedio, ingenuo estacional y el de derivar 
+#el pronostico ingenuo esta basado en la ultima observaciones 
+#que arroja la ST. Es decir este pronostico asume que la observacion mas importante es la ultima 
+##funcion en R 
+#naive (serie, h=num pronosticos)
+install.packages("forescast")
+require(forecast)
+naive (pib1, h=4)
+
+#######metodo promedio########
+
+##este metodo le da el mismo peso a todos los datos u observaciones 
+##es decir, se asume con este metodo que todas las observaciones tienen las misma 
+# importancia por lo que el pronostico es un promedio de todas las observaciones
+##funcion para R meanf(serie, h=numero de pronosticos)
+meanf(datosts,h=4)
+ plot(meanf(datosts,h=4))
+
+ ##metodo ingenuo estacional
+ ##este metodo se utiliza en ST
+ ##con alta estacionalidad este pronostico consiste en darle
+ #el mayor peso o la mayor ponderacion al dato del mismo periodo
+ #en el año anterior, por ejemplo trimestre 2 del 2005 es igual al trimestre trimestre 2 del 2006
+ # la funcion  para utilizarlo es R es snaive()
+ snaive(datosts,h=4)
+ plot(snaive(datosts,h=4))
