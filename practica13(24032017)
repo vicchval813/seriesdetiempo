@@ -1,0 +1,75 @@
+pib1# serie de tiempo del pib
+datosts#serie de tiempo de tasa de desocupacion
+acf(pib1)
+acf(datosts)
+##tarea buscar una ST de mexico en donde con el correlograma determinen que tiene ruido blanco
+#otra ST donde muestre el correlograma exponga que la ST tiene caminata aleatoria
+######################
+######################Modelos lineales para pronosticar
+##son la aplicacion de pronosticos lineales
+#como el ingenuo, promedio, ingenuo estacional y el de derivar 
+#el pronostico ingenuo esta basado en la ultima observaciones 
+#que arroja la ST. Es decir este pronostico asume que la observacion mas importante es la ultima 
+##funcion en R 
+#naive (serie, h=num pronosticos)
+install.packages("forescast")
+require(forecast)
+naive (pib1, h=4)
+
+#######metodo promedio########
+
+##este metodo le da el mismo peso a todos los datos u observaciones 
+##es decir, se asume con este metodo que todas las observaciones tienen las misma 
+# importancia por lo que el pronostico es un promedio de todas las observaciones
+##funcion para R meanf(serie, h=numero de pronosticos)
+meanf(datosts,h=4)
+ plot(meanf(datosts,h=4))
+
+ ##metodo ingenuo estacional
+ ##este metodo se utiliza en ST
+ ##con alta estacionalidad este pronostico consiste en darle
+ #el mayor peso o la mayor ponderacion al dato del mismo periodo
+ #en el año anterior, por ejemplo trimestre 2 del 2005 es igual al trimestre trimestre 2 del 2006
+ # la funcion  para utilizarlo es R es snaive()
+ snaive(datosts,h=4)
+ plot(snaive(datosts,h=4))
+ 
+ ##metodo de deriva
+ #este metodo consiste en que el pronostico puede incrementar o reducirse 
+ #dependiendo del promedio de los cambios historicos de la st
+ #codigo en r
+ #rwf(serie, h=num de pronostico, drift=TRUE)
+ datos<-read.csv("C:\\Users\\SALA-D17\\Downloads\\tarea2.csv")
+ datosts<-ts(datos,frequency = 3,start = 2005)
+ require(forecast)
+ rwf(datosts, h=4, drift=TRUE)#drift indica que se aplica el metodo de la deriva
+ desocmod1<-meanf(datosts,h=4)###pronostico del metodo del promedio
+ desocmod2<-naive(datosts,h=4)
+ desocmod3<-snaive(datosts,h=4)
+ desocmod4<-rwf(datosts,h=4,drift = TRUE)# la h es el periodo a pronosticar
+ 
+x11() #abre una ventana
+  plot(desocmod1, main = "pronostico de desocupacion trimestral")
+ lines(desocmod2$mean,col=5)
+ lines(desocmod3$mean,col=6)
+ lines(desocmod4$mean,col=7)
+ legend("topright",lty=1,col = c(5,6,7), legend = c("media","ingenuo","ingenuo estacional","deriva"))
+ 
+ names(desocmod2)
+ 
+ x11() #abre una ventana
+ plot(desocmod1, main = "pronostico de desocupacion trimestral")
+ lines(desocmod2$fitted,col=5)
+ lines(desocmod3$fitted,col=6)
+ lines(desocmod4$fitted,col=7)
+ legend("topright",lty=1,col = c(5,6,7), legend = c("ingenuo","ingenuo estacional","deriva"))
+ 
+ 
+ x11() #abre una ventana
+ plot(desocmod1, main = "pronostico de desocupacion trimestral")
+ lines(desocmod2$residuals,col=5)
+ lines(desocmod3$residuals,col=6)
+ lines(desocmod4$residuals,col=7)
+ legend("topright",lty=1,col = c(5,6,7), legend = c("ingenuo","ingenuo estacional","deriva"))
+ # no aparecen en la grafica por que los residuales son cercanos a 0
+ desocmod1$residuals
