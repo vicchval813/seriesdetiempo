@@ -1,0 +1,22 @@
+
+asa1<-t(data.frame(read.csv("C:\\Users\\SALA-D17\\Downloads\\asa.csv",header = T)[7,2:40]))
+
+
+asa1<-as.numeric(asa1)
+asat<-ts(asa1,start = 2005,frequency = 4)
+asat
+
+##suavizado exponencial en R
+require(forecast)
+mod1<-ses(asat,alpha = 0.1,initial = "simple",h=8)
+mod2<-ses(asat,alpha = 0.3,initial = "simple",h=8)
+mod3<-ses(asat,alpha = 0.95,,initial = "simple",h=8)
+x11()
+plot(mod1,ylab = "asalariados",xlab = "años",main = "asalariados",type = "o")####
+lines(mod1$fitted,col="brown",type="o")
+lines(mod2$fitted,col="red",type="o")
+lines(mod3$fitted,col="green",type="o")
+lines(mod1$mean,col="brown",type="o")
+lines(mod2$mean,col="red",type="o")
+lines(mod3$mean,col="green",type="o")
+legend("topleft",lty=1,col=c(1,"brown","red","green"),c("datos",expression(alpha==.1),expression(alpha==.3),expression(alpha==.95)),pch=64)##el 1 es el color negro
