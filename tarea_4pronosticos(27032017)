@@ -1,0 +1,73 @@
+desocu<-read.csv(file.choose())
+stdesoc<-ts(desocu,frequency = 4,start = 2005)
+plot(stdesoc,main="tasa de desocupacion",xlab="Años",ylab="porcentaje de desocupacion",col="blue")
+
+##realizamos un corte de 2005-2010
+serie05.10<-window(stdesoc,start=c(2005,1),end=c(2010,4))
+serie05.10
+
+##ahora realizamos los 4 pronosticos para esta serie de tiempo de 2010-2015
+
+#pronostico ingenuo
+install.packages("forescast")
+require(forecast)
+ingenuo<-naive (serie05.10, h=20)
+ingenuo
+plot(ingenuo)
+
+#pronostico promedio, igualmente de 2010 a 2015
+promedio<-meanf(serie05.10,h=20)
+promedio
+plot(promedio)
+
+#pronostico ingenuo estacional
+ingesta<-snaive(serie05.10,h=20)
+ingesta
+plot(ingesta)
+
+#pronostico deriva
+deriva<-rwf(serie05.10, h=20, drift=TRUE)
+deriva
+plot(deriva)
+
+#realizando un analisis grafico 
+
+x11()
+plot(stdesoc,main="Pronostico de desocupacion trimestral",col="black")
+lines(ingenuo$mean,col="red")
+lines(promedio$mean,col="blue")
+lines(ingesta$mean,col="green")
+lines(deriva$mean,col="orange")
+legend("topleft",lty=1,col = c("black","red","blue","green","orange"), legend = c("normal","ingenuo","media","ingenuo estacional","deriva"))
+
+#deacuerdo ala analisis grafico se puede estimar que el pronostico del promedio  se aproxima a los datos reales de 2010 a 2015
+
+#se realizara una resta entre los datos reales y los pronosticos para obtener un analisis deacuerdo a los calculos de los residuos
+
+dtsreales<-window(stdesoc,start=c(2011,1),end=c(2015,4))
+dtsreales
+
+pro1<-window(ingenuo$mean,start = c(2011,1),end = c(2015,4))
+pro1
+pro2<-window(promedio$mean,start = c(2011,1),end = c(2015,4))
+pro2
+pro3<-window(ingesta$mean,start = c(2011,1),end = c(2015,4))
+pro3
+pro4<-window(deriva$mean,start = c(2011,1),end = c(2015,4))
+pro4
+
+#realizamos las resta
+rest1<-dtsreales-pro1
+rest1
+
+rest2<-dtsreales-pro2
+rest2
+
+rest3<-dtsreales-pro3
+rest3
+
+rest4<-dtsreales-pro4
+rest4
+
+#la rest2 es el que sus valores se hacercan mas a 0, entonces se concluye que el 
+#pronostico del promedio es el que mejor estima en ese caso
