@@ -1,0 +1,27 @@
+install.packages("foreign")
+require(foreign)
+coe216<-read.dbf("C:\\Users\\SALA-D17\\Downloads\\coe2t116.dbf")
+ls(coe216)#para ver las variables de la base de datos
+coe216$P6D<-as.numeric(as.character(coe216$P6D))# ala varia coe216 primero la hace
+#caracter y despues a numeric
+
+coesins<-subset(coe216,coe216$P6D==1 | coe216$P6D==2| coe216$P6D==3| coe216$P6D==4| coe216$P6D==5)
+#el subset es para obtener un subconjunto dela base coe216$P6D y obtienes
+#una sub-base
+
+coe216$sinseg<-ifelse(coe216$P6D>=1 & coe216$P6D<=5, 1, ifelse(coe216$P6D>=6 & coe216$P6D<=9,2,0))#creamos una nueva variable dentro de la base original
+#los 1 son los que tienen seguridad social , los 2 son los que no y los 0 son otros
+table(coe216$sinseg)
+
+#######Ejercicio hacer la variable desocupados
+coe116<-read.dbf("C:\\Users\\SALA-D17\\Downloads\\coe1t116.dbf")
+coe116$P1C<-as.numeric(as.character(coe116$P1C))
+coe116$P1B<-as.numeric(as.character(coe116$P1B))
+coe116$P2_1<-as.numeric(as.character(coe116$P2_1))
+coe116$P2_2<-as.numeric(as.character(coe116$P2_2))
+coe116$P2_3<-as.numeric(as.character(coe116$P2_3))
+coe116$P2B<-as.numeric(as.character(coe116$P2B))
+coe116$P2C<-as.numeric(as.character(coe116$P2C))
+coe116$P1D<-as.numeric(as.character(coe116$P1D))
+
+coe116$desocupados<-ifelse(coe216$P1C==11,1,ifelse((coe116$P1B==2)&(coe116$P2_1==1 | coe116$2_2==2 | coe116$2_3==3) & (coe116$P2B==1) & (coe116$P2C!=2 & coe116$P2C!=9),2,ifelse((coe116$P1D==2 | coe116$P1D==9) & (coe116$P2_1==1 | coe116$P2_2==2 |coe116$P2_3==3) & (coe116$P2B==1)&(coe116$P2C!=2 & coe116$P2C!=9),3,0)))
