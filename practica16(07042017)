@@ -1,0 +1,48 @@
+install.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+deso <- read.csv("C:\\Users\\SALA-D18\\Downloads\\tarea2.csv",header= T)
+
+des1 <- ts (deso,frequency = 4, start =2005 )
+mod1<- ses(des1,alpha = 0.1, initial = "simple", h=8)
+mod2<- ses(des1,alpha = 0.3, initial = "simple", h=8)
+mod3<- ses(des1,alpha = 0.9, initial = "simple", h=8)
+mod4<- ses(des1,alpha = 0.95, initial = "simple", h=8)
+x11()
+plot(mod1, ylab ="desocupados", xlab = "año", main="Desocupados", type="o" )
+lines(fitted(mod1), col="blue", type="o")
+lines(fitted(mod2), col="red", type="o")
+lines(fitted(mod3), col="green", type="o")
+lines (fitted(mod4),col="yellow", type="o")
+
+aa <- des1 - mod1$fitted ###
+aa
+ mean (abs(aa)) #### MAE    ########## manual 
+sqrt(mean(aa^ 2)) ### RMSE #### manual 
+
+evalm1 <-accuracy (mod1) #### funcion en R 
+evalm1 
+##############mod2 ################
+bb <- des1 - mod2$fitted ###
+bb
+mean (abs(bb)) #### MAE
+sqrt(mean(bb^ 2)) ### RMSE
+evalm2 <-accuracy (mod2)
+evalm2 
+################ mod 3 ##############
+cc <- des1 - mod3$fitted ###
+cc
+mean (abs(cc)) #### MAE
+sqrt(mean(cc^ 2)) ### RMSE
+evalm3 <-accuracy (mod3)
+evalm3
+ ############## mod 4 ##########
+dd <- des1 - mod4$fitted
+dd
+mean (abs(dd)) #### MAE
+sqrt(mean(dd^ 2)) ### RMSE
+evalm4 <-accuracy (mod4)
+evalm4
+## concluimos que  el modelo 3 es el mejor, puesto por que se acerca mucho a nuestros datos observados
+###
