@@ -1,0 +1,39 @@
+install.packages("forecast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
+televisa<-read.csv("C:\\Users\\SALA-D21\\Documents\\acciones televisa.csv",head=FALSE)
+televisast<-ts(televisa,frequency = 252,start = 2016)
+telmdo1<-ses(televisast,alpha = 0.2, initial = "simple", h=15)
+telmod2<-ses(televisast,alpha = 0.4,initial = "simple",h=15)
+telmod3<-ses(televisast,alpha = 0.6,initial = "simple",h=15)
+telmod4<-ses(televisast,alpha = 0.8,initial = "simple",h=15)
+x11()
+plot(televisast,main="Acciones Televisa",xlab="Dia",ylab="Precio de accion",col="black",type="o")
+lines(fitted(telmdo1), col="blue", type="o")
+lines(fitted(telmod2),col="red",type = "o")
+lines(fitted(telmod3),col="orange",type="o")
+lines(fitted(telmod4),col="pink",type="o")
+#graficamente el telmod3 se acerca mas a los datos reales 
+#con un alpha de .6 
+tel1<-accuracy(telmdo1)
+tel2<-accuracy(telmod2)
+tel3<-accuracy(telmod3)
+tel4<-accuracy(telmod4)
+rmse1<-tel1[,2]
+rmse2<-tel2[,2]
+rmse3<-tel3[,2]
+rmse4<-tel4[,2]
+vectrmse<-c(rmse1,rmse2,rmse3,rmse4)
+vectrmse
+mae1<-tel1[,3]
+mae2<-tel2[,3]
+mae3<-tel3[,3]
+mae4<-tel4[,3]
+vectmae<-c(mae1,mae2,mae3,mae4)
+vectmae
+
+matriz<-matrix(c(vectrmse,vectmae),nrow = 4,ncol = 2)
+matriz
+which.min(matriz[,1])##la fila 2 de la matriz es el rmse minimo de todos
+which.min(matriz[,2])##la fila 4 de la matriz es el mae minimo de todos
