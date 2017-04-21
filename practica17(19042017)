@@ -1,0 +1,91 @@
+aa <- read.csv("C:\\Users\\SALA-D18\\Downloads\\tarea2.csv",header= T)
+require (fpp)
+aa <- ts(aa, start = 2005, frequency = 4)
+
+
+mod1<- ses(aa,alpha = 0.2, initial = "simple", h=4)
+mod2<- ses(aa,alpha = 0.4, initial = "simple", h=4)
+mod3<- ses(aa,alpha = 0.6, initial = "simple", h=4)
+mod4<- ses(aa,alpha = 0.8, initial = "simple", h=4)
+
+############ ANALISIS DE RESIDUALES  #####################
+### lo que se analizar de los rediduales es que cumplan 
+## con las propiedades de residuales que consiste en:
+#a) los residuales  no esten correlacionados
+#b) Tienen media cero
+#c) Tienen varianza constante 
+#d) Los rediduales estan normalmente distribuidos 
+
+
+####para esto r se tiene que obtener los residuales 
+## de cada uni de los 4 modeles con la finalidad de analizarlos
+# y conocer su comportamiento
+
+## para lo anterior primero vamos a graficar nuestros datos con los 
+## valores ajustados para despues extraer los residuales de cada 
+## modelo y comenzar los analisis correspondientes
+
+x11()
+plot(mod1, ylab ="desocupados", xlab = "año", main="Desocupados", type="l" )
+lines(mod1$fitted, col="blue", type="l")
+lines(mod2$fitted, col="red", type="l")
+lines(mod3$fitted, col="orange", type="l")
+lines (mod4$fitted,col="green", type="l")
+
+res1 <- residuals(mod1)
+res2 <- residuals(mod2)
+res3 <- residuals(mod3)
+res4 <- residuals(mod4)
+###para ver si no estan correlacionados 
+plot (res1, ylab = " residuales", xlab = "")
+plot (res2, ylab = " residuales", xlab = "")
+plot (res3, ylab = " residuales", xlab = "")
+plot (res4, ylab = " residuales", xlab = "")
+
+### deteriminar nclass el numero de grupos que determinas en un histograma en este caso fd garantiza que el histograma te de al rededor de 0
+## conocer si se distribuye normal ( hay normalidad y que la media de los residuales se acercan a cero)
+hist(res1, nclass = "FD", main="HISTOGRAMA DE RESIDUALES")
+hist(res2, nclass = "FD", main="HISTOGRAMA DE RESIDUALES")
+hist(res3, nclass = "FD", main="HISTOGRAMA DE RESIDUALES")
+hist(res4, nclass = "FD", main="HISTOGRAMA DE RESIDUALES")
+
+############## PRUEBA DE AUTOCORRELACIONES A LOS RESIDUALES ###############
+###########################################################################
+## para analizar las autocorrelaciones hemos visto que utilizamos 
+## mostrar la relacion que existe entre los datos
+### ademas de esta prueba que es una prueba grafica 
+## se utilza la prueba de ljung Box para esta prueba se usa la funciom 
+## Box.test que permite conocer la correlacion que existe entre 
+## los residuales a traves de una prueba de hipotesis 
+
+## para obtener el correlograma de los residuales analizados 
+## se realiza de la sig manera:
+## no hay relacion entre los datos si el correlograma los datos se encuentran de bajo de la linea punteada
+
+Acf(res1, main= "res 1")
+Acf(res2, main= "res 2")
+Acf(res3, main= "res 3")
+Acf(res4, main= "res 4")
+### para comprobar la correlacion de los residuales utilizamos 
+## una prueba que se llama ljung box que nos permite saber con mayor 
+## certeza si existe correlacion o ni de los residuales 
+##lag= desfase
+Box.test(res1, lag = 10 , type="Lj")
+Box.test(res2, lag = 10, type="Lj")
+Box.test(res3, lag = 10, type="Lj")
+Box.test(res4, lag = 10, type="Lj")
+
+### El estadistico Q de ljung box prueba la hipotesis nula de que las 
+## autocorrelaciones de hasta un desfase k son iguales a cero ( es decir, 
+# los valores de los datos con aleatorios e independiente  hata un cierto
+# numero de desfases), si el LQB es mayor que un valor critico  especificado, 
+#las autocorrelaciones para uno o mas desfases podrian ser estadisticamente 
+# significativas diferentes de cero, lo que indicara que los valores no son 
+#aleatorio ni independientes
+
+## las etapas que se usaran en un analisis de residuales son: 
+##1) elegir el modelo a traves de las medidas MAE Y RMSE 
+##2) Realizar las pruebas de los residuales de normalidad, independencia 
+## y varianza constante una vez que las pruebas son viables ya se puede 
+## elegir el modelo como una opcion a considerar para realizar 
+## los pronosticos necesarios.
