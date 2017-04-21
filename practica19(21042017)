@@ -1,0 +1,13 @@
+install.packages("fpp")
+require(fpp)
+cemex<-read.csv("C://Users//SALA-D24//Documents//acciones cemex.csv",header = FALSE)
+cemexst<-ts(cemex, frequency = 12,start = c(2015,04))
+#CORTE AL 85%
+cemex1<-window(cemexst,start=c(2015,04),end=c(2016,10))
+View(cemex1)
+#haciendo pronosticos con los 4 metodos
+cemexses<- ses(cemex1, initial = "simple", h=6)
+View(cemexses)
+cemexholtlineal<-holt(cemex1,initial = "simple",h=6)
+View(cemexholtlineal)
+cemexholtexp<-holt(cemex1,initial = "simple",exponential = T,h=6)
