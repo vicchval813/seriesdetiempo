@@ -1,0 +1,21 @@
+dolar<-read.csv("C://Users//SALA-D17//Documents//dolar.csv",head=F)
+dolarst<-ts(dolar,frequency = 12,start = 2015)
+plot(dolarst)
+dolar1<-window(dolarst,start=c(2015,1),end=c(2015,12))
+dolar2<-window(dolarst,start=c(2016,1),end=c(2016,4))
+View(dolar1)
+View(dolar2)
+##pronostico de holt winter aditivo
+require(fpp)
+dolarhwaditivo<-hw(dolar1,seasonal = "additive",h=4)
+dolarhwmult<-hw(dolar1,seasonal = "multiplicative",h=4)
+dolarhtendexp<-holt(dolar1,initial = "simple",exponential = TRUE)
+
+x11()
+plot(dolarst,main="pronostico del dolar",xlab="tiempo",ylab="precio del dolar",col="black")
+lines(dolarhwaditivo$mean,col="red")
+lines(dolarhwmult$mean,col="blue")
+lines(dolarhtendexp$mean,col="green")
+lines(dolar2,col="orange")
+legend("topleft",lty = 1,col = c("black","red","blue","green","orange"),
+       legend = c("datos reales","aditivo","multiplicativo","tendencia exponencial","datos reales"))
