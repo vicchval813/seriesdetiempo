@@ -1,0 +1,77 @@
+################### Ejercicio en clase ############################# #### utilizar 3 series de tiempo #### serie
+####1) precios diarios del dólar últimos 6 meses 
+#### 2) acciones de ICA diarias cierre de 2016 
+### 3) Últimos 16 años crecimiento (%) del Pib anual 
+### 4) acciones de Bimbo diarias cierre 2016 
+#### 5) una serie que tenga que ver con su trabajo final 
+
+#### 1) obtener las series
+#### 2) convertirlas en series de tiempo y graficarlas
+#### 3) analizar las gráficas y decidir qué modelo usar, modelos simples (media, ingenuo, etc), holt, holt amortiguado, holt Winter
+
+#### 4) con cada una de las series hacer una comparación de los datos ajustados de los modelos de predicción (elegir 1 modelo de simple, 1 holt, 1 amortiguado y 1 winter), despues analizar cual ajusta mejor y porque ustedes creen que este modelo realiza el mejor ajuste. Apliquen la función accuracy para saber si su análisis grafico coincide con los resultados del accuracy
+
+
+#### 5) con cada una de las series hacer una comparación de los datos pronosticados de los modelos de predicción (elegir 1 modelo de simple, 1 holt, 1 amortiguado y 1 winter), despues analizar cual pronostica mejors
+
+
+ica<-read.csv("C://Users//victo//OneDrive//documentos//acciones ica 2016.csv",header = F)
+bimbo<-read.csv("C://Users//victo//OneDrive//documentos//acciones bimbo 2016.csv",header = F)
+dolar<-read.csv("C://Users//victo//OneDrive//documentos//precio del dolar.csv",header = F)
+
+icast<-ts(ica,frequency = 252,start = c(2016,1))
+bimbost<-ts(bimbo,frequency = 252,start = c(2016,1))
+dolarst<-ts(dolar,frequency = 252,start = c(2016,1))
+
+
+
+#graficando las graficas
+plot(icast,col="blue")
+#esta grafica no muestra un comportamiento de tendencia positiva ni estacionariedad
+#si no que muestra aleatoriedad durante toda la serie
+#utilizare el metodo ingenuo
+
+plot(bimbost,col="red")
+#esta grafica se puede ver en dos bases, una con tendencia posiviva y despues con tendencia negativa
+#es dificil ver una estacionariedad dentro de la serie
+#aqui utlizare el metodo de holt
+
+plot(dolarst,col="green")
+#la suiente grafica en su primera fase aproximadamente ala mitad del periodo
+#se muestra una aletoriedad de los datos, no hay un comportamiento de estacionariedad en esta primera fase
+#para la siguiente fase muestra una tendencia negativa 
+#en esta serie utilizare el metodo el holt amortiguado
+
+
+#realizamos los pronosticos
+
+ica1<-window(icast,start=c(2016,1),end=c(2016,200))
+bimbo1<-window(bimbost,start=c(2016,1),end=c(2016,200))
+dolar1<-window(dolarst,start=c(2016,1),end=c(2016,104))
+
+#pronostico ingenuo
+install.packages("forescast")
+require(forecast)
+icaingenuo<-naive (ica1, h=52)
+icaingenuo
+plot(icaingenuo)
+
+#holt lineal
+install.packages("fpp")
+require(fpp)
+bimboholtlineal<-holt(bimbo1,initial = "simple",h=52)
+bimboholtlineal
+plot(bimboholtlineal)
+
+#tendencia aditiva amortiguada
+dolaramort<-holt(dolar1, damped= TRUE,h=26)
+dolaramort
+plot(dolaramort)
+
+
+icaacc<-accuracy(icaingenuo)
+icaacc
+bimboacc<-accuracy(bimboholtlineal)
+bimboacc
+dolaracc<-accuracy(dolaramort)
+dolaracc
