@@ -14,6 +14,10 @@
 
 #### 5) con cada una de las series hacer una comparación de los datos pronosticados de los modelos de predicción (elegir 1 modelo de simple, 1 holt, 1 amortiguado y 1 winter), despues analizar cual pronostica mejors
 
+install.packages("forescast")
+require(forecast)
+install.packages("fpp")
+require(fpp)
 
 ica<-read.csv("C://Users//victo//OneDrive//documentos//acciones ica 2016.csv",header = F)
 bimbo<-read.csv("C://Users//victo//OneDrive//documentos//acciones bimbo 2016.csv",header = F)
@@ -26,52 +30,184 @@ dolarst<-ts(dolar,frequency = 252,start = c(2016,1))
 
 
 #graficando las graficas
-plot(icast,col="blue")
+plot(icast,col="blue",main="Acciones ICA", xlab="Tiempo", ylab="Precio de acciones")
 #esta grafica no muestra un comportamiento de tendencia positiva ni estacionariedad
 #si no que muestra aleatoriedad durante toda la serie
-#utilizare el metodo ingenuo
+#utilizare el metodo ses,holt lineal, 
 
-plot(bimbost,col="red")
+plot(bimbost,col="red",main="Acciones BIMBO", xlab="Tiempo", ylab="Precio de acciones")
 #esta grafica se puede ver en dos bases, una con tendencia posiviva y despues con tendencia negativa
 #es dificil ver una estacionariedad dentro de la serie
 #aqui utlizare el metodo de holt
 
-plot(dolarst,col="green")
+plot(dolarst,col="green",main="DOLAR", xlab="Tiempo", ylab="Precio del dolar")
 #la suiente grafica en su primera fase aproximadamente ala mitad del periodo
 #se muestra una aletoriedad de los datos, no hay un comportamiento de estacionariedad en esta primera fase
 #para la siguiente fase muestra una tendencia negativa 
 #en esta serie utilizare el metodo el holt amortiguado
 
 
-#realizamos los pronosticos
+#####################realizamos los ajustes 
+#no tiene tendencia ni estacionariedad la ST ICA
 
-ica1<-window(icast,start=c(2016,1),end=c(2016,200))
-bimbo1<-window(bimbost,start=c(2016,1),end=c(2016,200))
-dolar1<-window(dolarst,start=c(2016,1),end=c(2016,104))
+icases<-ses(icast, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+icaholtlineal<- holt(icast, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+icaholtmult <- holt(icast,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+icaholtwinter<- hw(icast,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
 
-#pronostico ingenuo
-install.packages("forescast")
-require(forecast)
-icaingenuo<-naive (ica1, h=52)
-icaingenuo
-plot(icaingenuo)
+#analizando, para decidir que metodo realiza el mejor pronostico
+#fiited: ajustados, comparar los datos
+#mean: promedio, pronosticos
 
-#holt lineal
-install.packages("fpp")
-require(fpp)
-bimboholtlineal<-holt(bimbo1,initial = "simple",h=52)
-bimboholtlineal
-plot(bimboholtlineal)
+x11()
+plot(icast, main="ICA", xlab="Tiempo", ylab="Precio de Ica", type="o", col=1)
+lines(icases$fitted, col="blue")
+lines(icaholtlineal$fitted, col="orange")
+lines(icaholtmult$fitted, col="green")
+lines(icaholtwinter$fitted, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
+##el modelo que mas se ajusta a los datos reales es el holt winter
 
-#tendencia aditiva amortiguada
-dolaramort<-holt(dolar1, damped= TRUE,h=26)
-dolaramort
-plot(dolaramort)
+##para comprobar utilizaremos el accuarazy
+a<-accuracy(icases)
+a1<-a[,3]
+a1
+b<-accuracy(icaholtlineal)
+b1<-b[,3]
+b1
+c<-accuracy(icaholtmult)
+c1<-c[,3]
+c1
+d<-accuracy(icaholtwinter)
+d1<-d[,3]
+d1
+
+vectormeae<-c(a1,b1,c1,d1)
+which.min(vectormeae)
+#el que mejor se ajusta a los datos resles es metodo suavizado exponencial simple
 
 
-icaacc<-accuracy(icaingenuo)
-icaacc
-bimboacc<-accuracy(bimboholtlineal)
-bimboacc
-dolaracc<-accuracy(dolaramort)
-dolaracc
+#relizando los pronosticos
+ica1<-window(icast,start=c(2016,1),end=c(2016,202))
+
+icasespro<-ses(ica1, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+icaholtlinealpro<- holt(ica1, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+icaholtmultpro <- holt(ica1,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+icaholtwinterpro<- hw(ica1,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
+
+
+x11()
+plot(icast, main="pronosticos de los precios de ICA", xlab="Tiempo", ylab="Precio de Ica", type="o", col=1)
+lines(icasespro$mean, col="blue")
+lines(icaholtlinealpro$mean, col="orange")
+lines(icaholtmultpro$mean, col="green")
+lines(icaholtwinterpro$mean, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
+
+
+#el que pronostica mejor es SES 
+
+#realizando lo mismo para las otra ST
+#BIMBO
+
+bimboses<-ses(bimbost, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+bimboholtlineal<- holt(bimbost, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+bimboholtmult <- holt(bimbost,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+bimboholtwinter<- hw(bimbost,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
+
+x11()
+plot(bimbost, main="ICA", xlab="Tiempo", ylab="Precio de BIMBO", type="o", col=1)
+lines(bimboses$fitted, col="blue")
+lines(bimboholtlineal$fitted, col="orange")
+lines(bimboholtmult$fitted, col="green")
+lines(bimboholtwinter$fitted, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
+#el modelo que mas se ajusta es el holt multiplicativo
+
+##para comprobar utilizaremos el accuarazy
+e<-accuracy(bimboses)
+e1<-e[,3]
+f<-accuracy(bimboholtlineal)
+f1<-f[,3]
+g<-accuracy(bimboholtmult)
+g1<-g[,3]
+h<-accuracy(bimboholtwinter)
+h1<-h[,3]
+
+vectormeae2<-c(e1,f1,g1,h1)
+which.min(vectormeae2)
+# el que mejor se ajusta alos datos es el SES
+
+#relizando los pronosticos
+bimbo1<-window(bimbost,start=c(2016,1),end=c(2016,202))
+
+bimbosespro<-ses(bimbo1, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+bimboholtlinealpro<- holt(bimbo1, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+bimboholtmultpro <- holt(bimbo1,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+bimboholtwinterpro<- hw(bimbo1,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
+
+
+x11()
+plot(bimbost, main="pronosticos de los precios de BIMBO", xlab="Tiempo", ylab="Precio de BIMBO", type="o", col=1)
+lines(bimbosespro$mean, col="blue")
+lines(bimboholtlinealpro$mean, col="orange")
+lines(bimboholtmultpro$mean, col="green")
+lines(bimboholtwinterpro$mean, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
+
+
+
+
+
+#dolar
+dolarses<-ses(dolarst, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+dolarholtlineal<- holt(dolarst, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+dolarholtmult <- holt(dolarst,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+dolarholtwinter<- hw(dolarst,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
+
+x11()
+plot(dolarst, main="ICA", xlab="Tiempo", ylab="Precio de Ica", type="o", col=1)
+lines(dolarses$fitted, col="blue")
+lines(dolarholtlineal$fitted, col="orange")
+lines(dolarholtmult$fitted, col="green")
+lines(dolarholtwinter$fitted, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
+
+
+#parece que ningun modelo se ajusta a los datos reales, se desfazan mucho
+
+##para comprobar utilizaremos el accuarazy
+i<-accuracy(dolarses)
+i1<-i[,3]
+j<-accuracy(dolarholtlineal)
+j1<-j[,3]
+k<-accuracy(dolarholtmult)
+k1<-k[,3]
+l<-accuracy(dolarholtwinter)
+l1<-l[,3]
+
+vectormeae3<-c(i1,j1,k1,l1)
+which.min(vectormeae3)
+#el mejor se ajusta a los datos reales es SES
+
+dolar1<-window(dolarst,start=c(2016,1),end=c(2016,80))
+
+dolarsespro<-ses(dolar1, initial = "simple", h=50)# metodo suavizado exponencial simple (ses) 
+dolarholtlinealpro<- holt(dolar1, alpha=0.8, beta=0.2, initial="simple", h=50) #Modelo Holt lineal 
+dolarholtmultpro <- holt(dolar1,alpha=0.8, beta=0.2, exponential=T, damped=T,h=50) #Holt Amortiguado multiplicativo
+dolarholtwinterpro<- hw(dolar1,alpha=0.8, beta=0.2, h=50, seasonal="multiplicative") #Holt winter multiplicativo
+
+
+x11()
+plot(dolarst, main="pronosticos de los precios del DOLAR", xlab="Tiempo", ylab="Precio del DOLAR", type="o", col=1)
+lines(dolarsespro$mean, col="blue")
+lines(dolarholtlinealpro$mean, col="orange")
+lines(dolarholtmultpro$mean, col="green")
+lines(dolarholtwinterpro$mean, col="purple")
+legend("topleft", lty=1, col=c(1,"blue","orange","green","purple","yellow"), 
+       legend = c("Datos","SES","Holt lineal","Holt amortiguado mult","Holt winter mult"))
