@@ -1,0 +1,6 @@
+##generar una ST con 252 casos
+##del 2016 al 2017 diaria con rango de 300 a 900 
+ICA<-read.csv("C:\\Users\\SALA-D17\\Documents\\acciones ica 2016-7.csv",header = F)
+ICAst<-ts(ICA,frequency = 252,start = 2016)
+acf(ICAst)
+plot(ICAst)
