@@ -1,0 +1,45 @@
+############ ICA #################
+############### genere una st con 252 datos 
+########### del 2016 al 2017
+
+ica <- read.csv("C:\\Users\\victor\\Documents\\ica.csv",header = T)
+icats <- ts (ica , frequency=252, start= 2016)
+acf (icats)
+plot(icats)
+
+############################  TAREA #############################
+##analizando la grafica como no es estacionaria la serie de tiempo de ICA lo qure tenemos que hacer 
+###realizaremos el metodo de diferenciación
+############### diferenciando de forma manual para los primeros datos #####
+datos <- ica[1:10,]
+datos
+
+x1=ica[1,]
+x2=ica[2,]
+x3=ica[3,]
+x4=ica[4,]
+x5=ica[5,]
+x6=ica[6,]
+x7=ica[7,]
+x8=ica[8,]
+x9=ica[9,]
+x10=ica[10,]
+a=x2-x1
+b=x3-x2
+c=x4-x3
+d=x5-x4
+e=x6-x5
+f=x7-x6
+g=x8-x7
+h=x9-x8
+i=x10-x9
+diferencia <- (c(a,b,c,d,e,f,g,h,i))
+diferencia
+
+################## ahora usando la funcion #################
+##Para diferenciar una serie:
+##direncia<-diff(serie de tiempo)
+#############diferenciando la serie ICA función en R
+
+dif1<-diff(icats)
+dif1
