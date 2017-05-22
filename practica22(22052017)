@@ -1,0 +1,89 @@
+##############################################
+#########ACCIONES CEMEX Y BIMBO###############
+        ########################
+install.packages("foreign")
+require(foreign)
+require(fpp)
+cemex<-read.csv("C:\\Users\\SALA-D17\\Documents\\cemex acciones.csv",header = F)
+bimbo<-read.csv("C:\\Users\\SALA-D17\\Documents\\bimbo acciones.csv",header = F)
+cemexst<-ts(cemex,frequency = 252,start = 2016)
+bimbost<-ts(bimbo,frequency = 252,start = 2016)
+#revisar si nuestra series es estacionaria
+#se aplica la prueba de raiz unitaria a traves de la funcion
+#adf.test y espeamos que que el p-values sea menor a .05
+adf.test(bimbost)
+dbimts<-diff(bimbost)
+#aplicamos la primera diferenciacion con la funcion diff
+#debido aque la serie oiginal no es estacionaria, por que el p- value no es .01
+#ya que estamos buscando los 3 parametros
+adf.test(dbimts)
+#ahorita ya nos dio p-value .01 entonces el valor de la diff que es
+#el segundo parametro es 1 ya que solo realizamos una sola diferenciacion 
+#para que p-value sea .01
+
+##que nuestra serie en su primera diferenciacion se convierte en estacionaria 
+acf(dbimts)
+#le numero defranjas que sobrepasen la linea punteada sera el valor de "q"
+#que es el 3 parametro(promedios moviles) y se identifica cuando se forma 
+#un sube y baja de las lineas por debajo de la linea punteada
+
+#en este determinamos el numero de q que se asocia con 
+#los modelos de promedios moviles.
+#para determinar el valor de p que se relaciona conlos 
+#autorregresivos se utiliza la funcion pacf()
+pacf(dbimts)
+#segun el correlograma de pacf el valor de p
+#es 1, por lo que se propone un modelo ARIMA(1,1,2)
+modbim<-Arima(bimbost,order = c(1,1,2))
+modbim
+#se recomienda el AICc
+#pero se toma el valor menor
+# los valores que estan debajo de ar1 , ma1 y ma2 son los valores de teta y demas
+modbim2<-Arima(bimbost,order = c(2,1,2))
+modbim2
+#entre estos dos modelos habria que revisar el valor de AICc y el menor valor 
+#de AICc seria el mejor modelo con el criterio de AIKAIKE
+#############################
+#prueba de residuales... para ver si hay independencia de los residuales
+modres<-residuals(modbim)
+Box.test(modres,lag = 12,type = "Ljung-Box")#p value grande suguiere
+#residuales son ruidos blancos (hay independencia de los residuos)
+#############################
+mod1<-forecast(modbim,h=12)
+x11()
+plot(forecast(modbim,h=12),include = 18)#include te incluye los ultimos 18 datos
+mod1
+summary(mod1)
+auto.arima(bimbost)
+
+################CEMEX####################
+adf.test(cemexst)
+cemexdiff<-diff(cemexst)
+adf.test(cemexdiff)
+##el valor de diff es 1
+acf(cemexdiff)
+#el valor de MA(promedios moviles) es 1
+pacf(cemexdiff)
+#el valor de AR (autorregresivos) es 0
+modcemex<-Arima(cemexst, order = c(0,1,1))
+modcemex
+#moviendo el valor de AR y MA
+modcemex1<-Arima(cemexst,order = c(1,1,2))
+modcemex
+##prueba de residuales
+modrescemex<-residuals(modcemex)
+Box.test(modrescemex,lag=12,type = "Ljung-Box")
+mod2<-forecast(modcemex,h=15)
+x11()
+plot(mod2,include = 25)
+mod2
+auto.arima(cemexst)
+#el modelo que propone es ARIMA(0,1,0)
+modcemex2<-Arima(cemexst, order = c(0,1,0))
+modcemex2
+# tiene un AICc de 121.78 a comparacion del anterior que es 
+#de 123
+##prueba de residuales
+modrescemex1<-residuals(modcemex2)
+Box.test(modrescemex1,lag=12,type = "Ljung-Box")
+#aumento el valor de p value y podria considerarse alta
