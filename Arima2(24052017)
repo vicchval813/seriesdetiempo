@@ -1,0 +1,51 @@
+require(fpp)
+amovil<-read.csv("C:\\Users\\SALA-D17\\Documents\\america movil.csv")
+amovilst<-ts(amovil,frequency = 252,start = 2016)
+#Modelo Autorregresivo, para encontrar la ecuaion que lleva acabo Arima al momento de su ejecucion
+zz<-Arima(amovilst,order = c(1,0,0))
+zz
+#Yt=c+ fi1(Yt-1)+fi2(Yt-2)+...+fip(Yt-p)+et
+#en este caso el modelo autorregresi es de orden 1 AR(1) y se plantea de 
+#siguiente forma
+#la ecuacion es: 12.6923 + .9899(Yt-1)+ et
+#c=intercepto tiene valor de 12.6923 y fi tiene valor de .9899
+
+#ahora con un mod autorregresivo de 2 AR(2), tenemos
+zz2<-Arima(amovilst,order = c(2,0,0))
+zz2
+#la ecuacion sera: 12.6739 + 1.0655(Yt-1)- .0766(Yt-2)+ et en este caso f1=1.0655
+#f2=-.0766
+
+#Modelo de promedios moviles MA(q) se puede expresar
+#yt=c + teta1(et-1) + teta2 (et-2)+...+ tetap(et-p)
+#atraves de un  modelo ARIMA se expresa de sta forma como:
+
+yy<-Arima(amovilst,order = c(0,0,1))
+yy
+# se puede expresar: yt=12.3178 + .9095(et-1) + et en este caso teta=.9095
+
+#para un mod. de promedios moviles de orden 2 se expresa en un modelo arima como:
+
+yy2<-Arima(amovilst,order = c(0,0,2))
+yy2
+#se expresa como: 12.3223 + 1.3919(et-1) + .7129(et-2) + et
+
+#Modelos ARMA tienen valor de orden autorregresivo y valor de promedios moviles pero no tiene valor de 
+#diferenciacion
+
+##modelo ARIMA (con diferenciacion)
+y´t= c + fi(Y´t-1)+...+fip(Y´t-p) + teta1(et-1)+ teta2(et-2)+...+ tetap(et-q)+ et
+
+#Para un modelo ARIMA con p=2, d=3, q=2 expresa:
+yy3<-Arima(amovilst, order = c(2,3,2))
+yy3
+#con este modelo expresamos:
+y´´´t= .0855(Y´´´t-1) - .1523(Y´´´t-2) - 1.9810(et-1) + .9813(et-2) + et
+
+#############GCARSO##############
+gcarso<-read.csv("C:\\Users\\SALA-D17\\Downloads\\GCARSOA1.MX.csv")
+gcarsost<-ts(gcarso,frequency = 252,start = 2016)
+##Modelo Autorregresivo
+aa<-Arima(gcarsost,order = c(2,2,2))
+aa
+y´´´t= .7299(Y´´´t-1) - .1464(Y´´´t-2) - 1.8126(et-1) + .8126(et-2) + et
